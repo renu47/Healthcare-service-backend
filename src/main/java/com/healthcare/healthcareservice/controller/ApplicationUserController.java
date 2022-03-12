@@ -22,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,15 @@ public class ApplicationUserController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
+	@GetMapping("/check")
+	public JSONObject registerUser(){
+		System.out.println("Check API of ApplicationUser Controller");
+		JSONObject Obj = new JSONObject();
+		Obj.put("message", "success!");
+        return Obj;
+    }
+
+
     @PostMapping("/register")
 	public JSONObject registerUser(@RequestBody ApplicationUser user){
         JSONObject obj = new JSONObject();
@@ -55,15 +65,13 @@ public class ApplicationUserController {
 
 	@GetMapping("/view/{userId}")
     public ApplicationUser viewProfile(@PathVariable String userId){
-        
        System.out.println("==============="+userService.viewProfile(userId)) ;
         return userService.viewProfile(userId);
     }
 
 	@PostMapping("/edit/{userId}")
-	public JSONObject editProfile(@RequestBody ApplicationUser user, @PathVariable String userId){
-		JSONObject res = userService.editProfile(user, userId);
-		return res;
+	public boolean editProfile(@RequestBody ApplicationUser user, @PathVariable String userId){
+		return userService.editProfile(user, userId);
 	}
     
 
@@ -73,7 +81,7 @@ public class ApplicationUserController {
         
 		try {
 			authentication = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(request.getUser_email(), request.getPassword()));
+					.authenticate(new UsernamePasswordAuthenticationToken(request.getUser_name(), request.getPassword()));
 		} catch (DisabledException e) {
 			throw new DisabledUserException("User Inactive");
 		} catch (BadCredentialsException e) {

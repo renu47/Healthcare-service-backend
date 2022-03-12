@@ -42,17 +42,22 @@ public class ApplicationUserService {
         return  userRepository.findById(userId).get();
     }
 
-    public JSONObject editProfile(ApplicationUser user, String userId) {
-        ApplicationUser usr = userRepository.findByUserEmail(userId).get();
-        usr = user;
+    public boolean editProfile(ApplicationUser user, String userId) {
+        System.out.println("user id is = "+userId);
+        ApplicationUser usr = userRepository.findByUserName(userId).get();
+        System.out.println("usr  is == "+usr.user_email+" "+usr.user_mobile);
+        usr.setUser_name(userId);
+        usr.setUser_email(user.getUser_email());
+        usr.setUser_mobile(user.getUser_mobile());
+        usr.setLocation(user.getLocation());
+        System.out.println("user is= "+user.user_email+" "+user.user_mobile);
         usr = userRepository.save(usr);
         JSONObject res = new JSONObject();
         
         if(usr != null)
-        res.put("message", "Update successful!");
+        return true;
         else
-        res.put("message", "Update not successful!");
-        return res;
+        return false;
     }
 
 }
