@@ -37,6 +37,7 @@ public class AppointmentService {
     }
 
     public boolean deleteAppointment(String appointmentId) {
+        System.out.println("Deleted appointment ======="+appointmentId);
         aRepository.deleteById(appointmentId);
         return true;
     }

@@ -1,5 +1,6 @@
 package com.healthcare.healthcareservice.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.healthcare.healthcareservice.Model.Patient;
@@ -48,6 +49,17 @@ public class PatientController {
     @DeleteMapping("/delete/{id}")
     public boolean deletePatient(@PathVariable String id){
         return pService.deletePatient(id);
+    }
+
+    @GetMapping("/disease/list")
+    public JSONObject diseaseList(){
+        List<String> list = new ArrayList<>();
+        list.add("BP");
+        list.add("Sugar");
+        list.add("Gastro & Liver");
+        JSONObject obj = new JSONObject();
+        obj.put("list", list);
+        return obj;
     }
 }
 
